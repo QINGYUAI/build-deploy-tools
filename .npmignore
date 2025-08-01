@@ -58,3 +58,4 @@ coverage/
 # 构建产物示例目录
 vam3/
 myapp/
+.specstory/ 
