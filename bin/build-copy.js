@@ -38,7 +38,7 @@ function parseArguments () {
   const args = process.argv.slice(2)
   const config = {
     fileName: utils.getFileName(),
-    targetParentDir: 'D:/Work/Vue3/yiyumsaas', // 默认目标目录
+    targetParentDir: 'D:/Work/Vue3/development', // 默认目标目录
     autoCommit: null, // null表示使用配置自动判断
     showHelp: false
   }
@@ -75,7 +75,7 @@ function showHelp () {
 
 选项：
   --build=<文件名>     指定构建文件名 (默认: vam3)
-  --target=<目录>      指定目标父目录 (默认: D:/Work/Vue3/yiyumsaas)
+  --target=<目录>      指定目标父目录 (默认: D:/Work/Vue3/development)
   --auto              启用自动模式
   --commit            强制自动提交到SVN
   --no-commit         禁止提交到SVN

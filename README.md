@@ -180,7 +180,7 @@ module.exports = {
 
                   await buildDeployTools.executeBuildCopy({
                     sourceDir: './dist', // 构建输出目录
-                    targetParentDir: 'D:/Work/Vue3/yiyumsaas',
+                    targetParentDir: 'D:/Work/Vue3/development',
                     autoCommit: true // 根据需要设置
                   })
 
@@ -222,7 +222,7 @@ export default defineConfig({
           try {
             await buildDeployTools.executeBuildCopy({
               sourceDir: './dist',
-              targetParentDir: 'D:/Work/Vue3/yiyumsaas',
+              targetParentDir: 'D:/Work/Vue3/development',
               autoCommit: false
             })
             console.log('✅ 文件复制完成')
@@ -258,7 +258,7 @@ export default {
           try {
             await buildDeployTools.executeBuildCopy({
               sourceDir: './dist',
-              targetParentDir: 'D:/Work/Vue3/yiyumsaas'
+              targetParentDir: 'D:/Work/Vue3/development'
             })
             console.log('✅ 文件复制完成')
           } catch (error) {
@@ -307,7 +307,7 @@ async function buildAndDeploy() {
     const tools = new BuildDeployTools()
     await tools.executeBuildCopy({
       sourceDir: './dist',
-      targetParentDir: 'D:/Work/Vue3/yiyumsaas',
+      targetParentDir: 'D:/Work/Vue3/development',
       autoCommit: process.env.AUTO_COMMIT === 'true'
     })
     

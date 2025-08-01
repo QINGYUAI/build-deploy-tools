@@ -83,7 +83,7 @@ module.exports = {
 
               const deployConfig = {
                 sourceDir: `./${getFileName()}`,
-                targetParentDir: 'D:/Work/Vue3/yiyumsaas',
+                targetParentDir: 'D:/Work/Vue3/development',
                 fileName: getFileName(),
                 autoCommit: process.env.AUTO_COMMIT === 'true'
               }
@@ -193,7 +193,7 @@ export default defineConfig({
             try {
               await buildDeployTools.executeBuildCopy({
                 sourceDir: `./${buildConfig.outDir}`,
-                targetParentDir: 'D:/Work/Vue3/yiyumsaas',
+                targetParentDir: 'D:/Work/Vue3/development',
                 fileName: buildConfig.fileName,
                 autoCommit: process.env.AUTO_COMMIT === 'true'
               })
@@ -298,7 +298,7 @@ export default {
           
           await buildDeployTools.executeBuildCopy({
             sourceDir: `./${fileName}`,
-            targetParentDir: 'D:/Work/Vue3/yiyumsaas',
+            targetParentDir: 'D:/Work/Vue3/development',
             fileName: fileName,
             autoCommit: process.env.AUTO_COMMIT === 'true'
           })
@@ -437,7 +437,7 @@ NODE_ENV=production
 
 # 部署配置
 AUTO_COMMIT=false
-TARGET_DIR=D:/Work/Vue3/yiyumsaas
+TARGET_DIR=D:/Work/Vue3/development
 BUILD_NAME=vam3
 
 # 错误处理
