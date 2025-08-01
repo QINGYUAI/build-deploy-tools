@@ -1,6 +1,6 @@
 {
   "name": "build-deploy-tools",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "构建部署工具包 - 支持文件复制、SVN操作、系统通知确认等功能",
   "main": "index.js",
   "bin": {
