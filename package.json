@@ -1,0 +1,54 @@
+{
+  "name": "build-deploy-tools",
+  "version": "1.2.2",
+  "description": "构建部署工具包 - 支持文件复制、SVN操作、系统通知确认等功能",
+  "main": "index.js",
+  "bin": {
+    "build-copy": "./bin/build-copy.js",
+    "test-notification": "./bin/test-notification.js"
+  },
+  "scripts": {
+    "test": "node bin/test-notification.js",
+    "build-copy": "node bin/build-copy.js"
+  },
+  "keywords": [
+    "build",
+    "deploy",
+    "copy",
+    "svn",
+    "notification",
+    "automation",
+    "工具",
+    "构建",
+    "部署"
+  ],
+  "author": "qingyuai",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^11.1.1",
+    "node-notifier": "^10.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/build-deploy-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/build-deploy-tools/issues"
+  },
+  "homepage": "https://github.com/your-username/build-deploy-tools#readme",
+  "files": [
+    "index.js",
+    "lib/",
+    "bin/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "INSTALL.md",
+    "QUICKSTART.zh-cn.md",
+    "example.config.js",
+    "integration-examples.md"
+  ]
+}

@@ -1,0 +1,60 @@
+# 源码中的测试和开发文件
+test/
+tests/
+*.test.js
+*.spec.js
+
+# 开发配置文件
+.eslintrc.*
+.prettierrc.*
+jest.config.js
+webpack.config.js
+rollup.config.js
+
+# 文档源文件
+docs/
+examples/
+
+# 开发依赖和构建脚本
+scripts/build-copy.js
+scripts/test-notification.js
+QUICKSTART.md
+README-notification.md
+
+# IDE 配置
+.vscode/
+.idea/
+
+# 临时文件
+temp/
+tmp/
+*.tmp
+
+# 日志文件
+logs/
+*.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Git 相关
+.git/
+.gitignore
+
+# 环境配置
+.env*
+
+# 缓存目录
+.cache/
+.parcel-cache/
+
+# 覆盖率报告
+coverage/
+
+# SVN 目录
+.svn/
+
+# 构建产物示例目录
+vam3/
+myapp/
