@@ -33,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/build-deploy-tools.git"
+    "url": "git+https://github.com/QINGYUAI/build-deploy-tools.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/build-deploy-tools/issues"
+    "url": "https://github.com/QINGYUAI/build-deploy-tools/issues"
   },
-  "homepage": "https://github.com/your-username/build-deploy-tools#readme",
+  "homepage": "https://github.com/QINGYUAI/build-deploy-tools#readme",
   "files": [
     "index.js",
     "lib/",
