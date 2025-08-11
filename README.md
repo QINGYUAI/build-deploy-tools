@@ -13,6 +13,7 @@
 - 🤖 **自动化模式** - 支持 CI/CD 环境的无人值守操作
 - 📁 **文件操作** - 高效的文件复制、删除等操作
 - 🔗 **SVN 集成** - 完整的 SVN 更新、提交、删除等操作
+- 🧠 **智能提交信息** - 自动从Git/SVN获取最近提交信息，支持自定义格式化
 - 📊 **进度提示** - 直观的进度条和状态反馈
 - 🛠️ **命令行工具** - 提供便捷的 CLI 命令
 - 📝 **详细日志** - 完整的操作日志和错误信息
@@ -55,6 +56,15 @@ build-copy --auto --commit
 
 # 自定义构建文件名和目标目录
 build-copy --build=myapp --target=D:/Projects/deployment
+
+# 🆕 使用智能提交信息（v1.3.0+）
+build-copy --auto --commit  # 自动获取Git/SVN最近提交信息
+
+# 🆕 自定义提交信息
+build-copy --message="修复登录问题" --commit
+
+# 🆕 格式化提交信息
+build-copy --prefix="🚀" --add-timestamp --commit
 ```
 
 #### 2. 通知功能测试
@@ -85,7 +95,14 @@ async function deploy() {
       sourceDir: './dist',
       targetParentDir: 'D:/Projects/deployment',
       fileName: 'myapp',
-      autoCommit: true
+      autoCommit: true,
+      // 🆕 v1.3.0+ 智能提交信息功能
+      useVcsHistory: true,  // 启用版本控制历史
+      commitMessage: null,  // 使用智能获取的信息
+      commitOptions: {
+        prefix: '[自动部署]',
+        addTimestamp: true
+      }
     })
     console.log('部署成功！')
   } catch (error) {
@@ -107,7 +124,7 @@ async function deploy() {
     "test-notification": "test-notification"
   },
   "devDependencies": {
-    "build-deploy-tools": "^1.1.0"
+    "build-deploy-tools": "^1.3.0"
   }
 }
 ```
@@ -181,7 +198,13 @@ module.exports = {
                   await buildDeployTools.executeBuildCopy({
                     sourceDir: './dist', // 构建输出目录
                     targetParentDir: 'D:/Work/Vue3/development',
-                    autoCommit: true // 根据需要设置
+                    autoCommit: true, // 根据需要设置
+                    // 🆕 v1.3.0+ 智能提交信息
+                    useVcsHistory: true,
+                    commitOptions: {
+                      prefix: '[Webpack构建]',
+                      addTimestamp: true
+                    }
                   })
 
                   console.log('✅ 文件复制完成')
@@ -223,7 +246,12 @@ export default defineConfig({
             await buildDeployTools.executeBuildCopy({
               sourceDir: './dist',
               targetParentDir: 'D:/Work/Vue3/development',
-              autoCommit: false
+              autoCommit: false,
+              // 🆕 v1.3.0+ 智能提交信息
+              useVcsHistory: true,
+              commitOptions: {
+                prefix: '[Vite构建]'
+              }
             })
             console.log('✅ 文件复制完成')
           } catch (error) {
@@ -258,7 +286,12 @@ export default {
           try {
             await buildDeployTools.executeBuildCopy({
               sourceDir: './dist',
-              targetParentDir: 'D:/Work/Vue3/development'
+              targetParentDir: 'D:/Work/Vue3/development',
+              // 🆕 v1.3.0+ 智能提交信息
+              useVcsHistory: true,
+              commitOptions: {
+                prefix: '[Rollup构建]'
+              }
             })
             console.log('✅ 文件复制完成')
           } catch (error) {
@@ -308,7 +341,13 @@ async function buildAndDeploy() {
     await tools.executeBuildCopy({
       sourceDir: './dist',
       targetParentDir: 'D:/Work/Vue3/development',
-      autoCommit: process.env.AUTO_COMMIT === 'true'
+      autoCommit: process.env.AUTO_COMMIT === 'true',
+      // 🆕 v1.3.0+ 智能提交信息
+      useVcsHistory: true,
+      commitOptions: {
+        prefix: '[自动构建]',
+        addTimestamp: true
+      }
     })
     
     console.log('🎉 构建和部署完成！')
@@ -344,6 +383,12 @@ buildAndDeploy()
 | `--no-notification` | 禁用系统通知 | `build-copy --no-notification` |
 | `--build=<name>` | 指定构建文件名 | `build-copy --build=myapp` |
 | `--target=<path>` | 指定目标目录 | `build-copy --target=D:/Projects` |
+| 🆕 `--message=<信息>` | 自定义提交信息 | `build-copy --message="修复bug"` |
+| 🆕 `--commit-message=<信息>` | 自定义提交信息（别名） | `build-copy --commit-message="版本发布"` |
+| 🆕 `--no-vcs-history` | 禁用版本控制历史 | `build-copy --no-vcs-history` |
+| 🆕 `--add-timestamp` | 添加时间戳 | `build-copy --add-timestamp` |
+| 🆕 `--prefix=<前缀>` | 添加前缀 | `build-copy --prefix="[部署]"` |
+| 🆕 `--suffix=<后缀>` | 添加后缀 | `build-copy --suffix="[完成]"` |
 
 ### 环境变量
 
@@ -354,6 +399,62 @@ buildAndDeploy()
 | `npm_config_commit_cli=true` | 启用自动提交 | `npm run build-copy --commit` |
 | `npm_config_notification=false` | 禁用通知 | `npm run build-copy --notification=false` |
 | `npm_config_build=filename` | 指定构建文件名 | `npm run build-copy --build=myapp` |
+
+## 🧠 智能提交信息功能 (v1.3.0+)
+
+### 🎯 功能特性
+
+**智能提交信息**功能能够自动从当前项目的版本控制系统（Git或SVN）获取最近一次提交信息，作为部署时的提交信息，保持代码变更与部署记录的一致性。
+
+#### 🔧 优先级机制
+
+1. **自定义信息** - 手动指定的提交信息（最高优先级）
+2. **Git最近提交** - 从当前Git仓库获取最近一次提交信息
+3. **SVN最近提交** - 从当前SVN工作目录获取最近一次提交信息
+4. **默认信息** - 使用默认的"更新构建文件"
+
+#### 🎨 格式化选项
+
+- **前缀/后缀** - 为提交信息添加自定义前缀或后缀
+- **时间戳** - 自动添加当前时间戳
+- **组合使用** - 支持多种格式化选项组合
+
+### 📝 使用示例
+
+```bash
+# 基本使用 - 自动获取版本控制提交信息
+build-copy --auto --commit
+
+# 自定义提交信息
+build-copy --message="紧急修复支付问题" --commit
+
+# 格式化选项
+build-copy --prefix="🚀[生产]" --add-timestamp --commit
+# 结果：🚀[生产] 修复用户登录验证问题 [2024-01-15 14:30]
+
+# 禁用版本控制历史，仅使用默认信息
+build-copy --no-vcs-history --commit
+```
+
+### 💻 编程接口
+
+```javascript
+await tools.executeBuildCopy({
+  sourceDir: './dist',
+  targetParentDir: 'D:/Work/Vue3/development',
+  autoCommit: true,
+  // 智能提交信息配置
+  useVcsHistory: true,        // 启用版本控制历史
+  commitMessage: null,        // 使用智能获取的信息
+  commitOptions: {
+    prefix: '[自动部署]',
+    suffix: '[完成]',
+    addTimestamp: true
+  }
+})
+```
+
+详细使用指南请参考：[📖 智能提交信息示例文档](./SMART-COMMIT-EXAMPLES.md)
 
 ## 🌍 跨平台支持
 
@@ -369,6 +470,7 @@ buildAndDeploy()
 - [🚀 快速开始](./QUICKSTART.zh-cn.md) - 中文快速开始指南
 - [📝 更新日志](./CHANGELOG.md) - 版本更新历史
 - [⚙️ 配置示例](./example.config.js) - 完整的配置示例
+- 🆕 [🧠 智能提交信息示例](./SMART-COMMIT-EXAMPLES.md) - 智能提交信息功能详细指南
 
 ## 🛠️ API 文档
 
@@ -381,6 +483,7 @@ const tools = new BuildDeployTools(options)
 ```
 
 **选项 (options):**
+
 - `maxRetries` (number): 最大重试次数，默认 3
 - `retryDelay` (number): 重试延迟时间(毫秒)，默认 2000
 - `defaultFileName` (string): 默认文件名，默认 'vam3'
@@ -392,10 +495,17 @@ const tools = new BuildDeployTools(options)
 执行完整的构建复制流程
 
 **参数:**
+
 - `config.sourceDir` (string): 源目录路径
 - `config.targetParentDir` (string): 目标父目录路径
 - `config.fileName` (string, 可选): 构建文件名
 - `config.autoCommit` (boolean, 可选): 是否自动提交到 SVN
+- 🆕 `config.commitMessage` (string, 可选): 自定义提交信息
+- 🆕 `config.useVcsHistory` (boolean, 可选): 是否使用版本控制历史，默认true
+- 🆕 `config.commitOptions` (object, 可选): 提交信息格式化选项
+  - `prefix` (string): 前缀
+  - `suffix` (string): 后缀
+  - `addTimestamp` (boolean): 是否添加时间戳
 
 **返回:** `Promise<boolean>`
 
@@ -412,6 +522,7 @@ const tools = new BuildDeployTools(options)
 #### 1. 系统通知不显示
 
 **解决方案:**
+
 ```bash
 # 使用命令行模式
 build-copy --no-notification
@@ -420,12 +531,14 @@ build-copy --no-notification
 #### 2. SVN 操作失败
 
 **解决方案:**
+
 - 确保目标目录是 SVN 工作副本
 - 检查 SVN 权限和网络连接
 
 #### 3. 源目录不存在
 
 **解决方案:**
+
 ```bash
 # 先执行构建
 npm run build
