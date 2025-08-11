@@ -40,6 +40,9 @@ function parseArguments () {
     fileName: utils.getFileName(),
     targetParentDir: 'D:/Work/Vue3/development', // 默认目标目录
     autoCommit: null, // null表示使用配置自动判断
+    commitMessage: null, // 自定义提交信息
+    useVcsHistory: true, // 是否使用版本控制历史
+    commitOptions: {}, // 提交信息格式化选项
     showHelp: false
   }
 
@@ -50,10 +53,22 @@ function parseArguments () {
       config.fileName = arg.split('=')[1]
     } else if (arg.startsWith('--target=')) {
       config.targetParentDir = arg.split('=')[1]
+    } else if (arg.startsWith('--message=')) {
+      config.commitMessage = arg.split('=')[1]
+    } else if (arg.startsWith('--commit-message=')) {
+      config.commitMessage = arg.split('=')[1]
     } else if (arg === '--commit') {
       config.autoCommit = true
     } else if (arg === '--no-commit') {
       config.autoCommit = false
+    } else if (arg === '--no-vcs-history') {
+      config.useVcsHistory = false
+    } else if (arg === '--add-timestamp') {
+      config.commitOptions.addTimestamp = true
+    } else if (arg.startsWith('--prefix=')) {
+      config.commitOptions.prefix = arg.split('=')[1]
+    } else if (arg.startsWith('--suffix=')) {
+      config.commitOptions.suffix = arg.split('=')[1]
     }
   }
 
@@ -74,13 +89,19 @@ function showHelp () {
   build-copy [选项]
 
 选项：
-  --build=<文件名>     指定构建文件名 (默认: vam3)
-  --target=<目录>      指定目标父目录 (默认: D:/Work/Vue3/development)
-  --auto              启用自动模式
-  --commit            强制自动提交到SVN
-  --no-commit         禁止提交到SVN
-  --no-notification   禁用系统通知
-  --help, -h          显示此帮助信息
+  --build=<文件名>        指定构建文件名 (默认: vam3)
+  --target=<目录>         指定目标父目录 (默认: D:/Work/Vue3/development)
+  --auto                 启用自动模式
+  --commit               强制自动提交到SVN
+  --no-commit            禁止提交到SVN
+  --message=<信息>       自定义提交信息
+  --commit-message=<信息> 自定义提交信息（同--message）
+  --no-vcs-history       不使用版本控制历史信息
+  --add-timestamp        在提交信息中添加时间戳
+  --prefix=<前缀>        为提交信息添加前缀
+  --suffix=<后缀>        为提交信息添加后缀
+  --no-notification      禁用系统通知
+  --help, -h             显示此帮助信息
 
 环境变量：
   CI=true                       # CI环境自动启用自动模式
@@ -94,7 +115,15 @@ function showHelp () {
   build-copy --auto
   build-copy --auto --commit
   build-copy --build=myapp --target=D:/Work/Projects
+  build-copy --message="修复登录问题" --commit
+  build-copy --auto --add-timestamp --prefix="[部署]"
+  build-copy --no-vcs-history --message="手动部署"
   build-copy --no-notification
+
+智能提交信息：
+  - 优先级：自定义信息 > Git最近提交 > SVN最近提交 > 默认信息
+  - 自动从当前Git/SVN仓库获取最近一次提交信息
+  - 支持格式化选项：前缀、后缀、时间戳
 
 注意：
   - 请确保已执行构建命令生成相应文件
@@ -137,6 +166,18 @@ async function main () {
     )
   }
 
+  // 🆕 显示提交信息配置
+  if (config.commitMessage) {
+    console.log(`📋 自定义提交信息: "${config.commitMessage}"`)
+  }
+  console.log(
+    `📋 使用版本控制历史: ${config.useVcsHistory ? '✅ 启用' : '❌ 禁用'}`
+  )
+
+  if (Object.keys(config.commitOptions).length > 0) {
+    console.log(`📋 提交信息选项:`, config.commitOptions)
+  }
+
   try {
     // 创建工具实例
     const tools = new BuildDeployTools()
@@ -167,5 +208,15 @@ process.on('unhandledRejection', (reason, promise) => {
   process.exit(1)
 })
 
-// 运行主函数
-main()
+// 🔧 只有在直接运行时才执行main函数
+if (require.main === module) {
+  // 运行主函数
+  main()
+}
+
+// 🔧 导出供编程使用
+module.exports = {
+  main,
+  parseArguments,
+  showHelp
+}

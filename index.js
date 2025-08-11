@@ -12,6 +12,7 @@ const utils = require('./lib/utils')
 const notification = require('./lib/notification')
 const fileOperations = require('./lib/file-operations')
 const svnOperations = require('./lib/svn-operations')
+const vcsOperations = require('./lib/vcs-operations')
 
 /**
  * 构建复制工具类
@@ -36,6 +37,9 @@ class BuildDeployTools {
    * @param {string} config.targetParentDir - 目标父目录
    * @param {string} config.fileName - 文件名（可选）
    * @param {boolean} config.autoCommit - 是否自动提交（可选）
+   * @param {string} config.commitMessage - 自定义提交信息（可选）
+   * @param {boolean} config.useVcsHistory - 是否使用版本控制历史（可选，默认true）
+   * @param {Object} config.commitOptions - 提交信息格式化选项（可选）
    * @returns {Promise<boolean>} 执行结果
    */
   async executeBuildCopy (config) {
@@ -43,7 +47,10 @@ class BuildDeployTools {
       sourceDir,
       targetParentDir,
       fileName = this.options.defaultFileName,
-      autoCommit = null
+      autoCommit = null,
+      commitMessage = null,
+      useVcsHistory = true,
+      commitOptions = {}
     } = config
 
     const path = require('path')
@@ -111,14 +118,33 @@ class BuildDeployTools {
                 )
 
           if (shouldCommit) {
+            // 🆕 智能获取提交信息
+            const smartCommitMessage = vcsOperations.getSmartCommitMessage({
+              cwd: process.cwd(),
+              customMessage: commitMessage,
+              defaultMessage: '更新构建文件',
+              useVcsHistory: useVcsHistory
+            })
+
+            // 🆕 格式化提交信息
+            const finalCommitMessage = vcsOperations.formatCommitMessage(
+              smartCommitMessage,
+              commitOptions
+            )
+
             await svnOperations.commitToSvnWithRetry(
               targetDirWithFolder,
-              targetParentDir
+              targetParentDir,
+              finalCommitMessage
             )
-            await notification.notify('完成', '文件已成功复制并提交到SVN', {
-              sound: true,
-              timeout: 8
-            })
+            await notification.notify(
+              '完成',
+              `文件已成功复制并提交到SVN\n提交信息: ${finalCommitMessage}`,
+              {
+                sound: true,
+                timeout: 8
+              }
+            )
           } else {
             await notification.notify('完成', '文件已复制，未提交到SVN', {
               sound: true,
@@ -216,6 +242,7 @@ module.exports = {
   notification,
   fileOperations,
   svnOperations,
+  vcsOperations,
 
   // 便利方法 - 直接创建实例
   create: options => new BuildDeployTools(options),
