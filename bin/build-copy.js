@@ -38,7 +38,7 @@ function parseArguments () {
   const args = process.argv.slice(2)
   const config = {
     fileName: utils.getFileName(),
-    targetParentDir: 'D:/Work/Vue3/development', // 默认目标目录
+    targetParentDir: 'D:/Work/Vue3/yiyumsaas', // 默认目标目录
     autoCommit: null, // null表示使用配置自动判断
     commitMessage: null, // 自定义提交信息
     useVcsHistory: true, // 是否使用版本控制历史

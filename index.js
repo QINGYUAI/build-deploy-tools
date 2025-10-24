@@ -135,7 +135,8 @@ class BuildDeployTools {
             await svnOperations.commitToSvnWithRetry(
               targetDirWithFolder,
               targetParentDir,
-              finalCommitMessage
+              finalCommitMessage,
+              true // 显示详细进度条
             )
             await notification.notify(
               '完成',

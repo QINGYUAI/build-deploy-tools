@@ -43,6 +43,9 @@ const { execSync } = require('child_process') // 子进程执行模块
 const notifier = require('node-notifier') // 系统通知模块
 const readline = require('readline') // 命令行交互模块
 
+// 导入SVN操作模块
+const { commitToSvnWithRetry } = require('./lib/svn-operations')
+
 // 重试配置
 const RETRY_CONFIG = {
   maxRetries: 3, // 最大重试次数
@@ -466,38 +469,11 @@ async function deleteDirectoryWithRetry(targetDir) {
   )
 }
 
-/**
- * SVN提交，支持自动重试
- * @param {string} targetDir - 目标目录
- * @param {string} parentDir - 父目录
- * @returns {Promise<boolean>} 提交结果
- */
-async function commitToSvnWithRetry(targetDir, parentDir) {
-  return await retryOperation(
-    async () => {
-      console.log('📤 提交到SVN...')
-
-      await executeSvn('svn add . --force', targetDir, 'SVN添加失败')
-      await executeSvn(
-        'svn commit -m "更新构建文件"',
-        parentDir,
-        'SVN提交失败',
-        RETRY_CONFIG.commitTimeout,
-        true
-      )
-
-      console.log('✅ SVN提交成功')
-      return true
-    },
-    RETRY_CONFIG.maxRetries,
-    RETRY_CONFIG.retryDelay,
-    'SVN提交'
-  )
-}
+// SVN提交函数已移动到 lib/svn-operations.js 模块中
 
 // 定义源目录和目标目录
 const sourceDir = path.resolve(__dirname, `../${getFileName()}`)
-const targetParentDir = 'D:/Work/Vue3/development'
+const targetParentDir = 'D:/Work/Vue3/yiyumsaas'
 const targetDirWithFolder = path.join(targetParentDir, path.basename(sourceDir))
 
 console.log(`📦 准备复制: ${path.basename(sourceDir)} → ${targetParentDir}`)
@@ -555,7 +531,13 @@ async function main() {
         AUTO_CONFIG.autoCommit
       )
       if (shouldCommit) {
-        await commitToSvnWithRetry(targetDirWithFolder, targetParentDir)
+        // 使用新的SVN提交函数，带有详细进度显示
+        await commitToSvnWithRetry(
+          targetDirWithFolder,
+          targetParentDir,
+          '更新构建文件', // 提交信息
+          true // 显示详细进度条
+        )
         notify('完成', '文件已成功复制并提交到SVN', { sound: true, timeout: 8 })
       } else {
         notify('完成', '文件已复制，未提交到SVN', { sound: true, timeout: 8 })

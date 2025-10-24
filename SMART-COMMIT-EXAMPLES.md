@@ -42,7 +42,7 @@ build-copy --no-vcs-history --commit
 # 配合自定义信息
 build-copy --no-vcs-history --message="紧急修复" --commit
 ```
-
+$$
 #### 格式化选项
 ```bash
 # 添加时间戳
