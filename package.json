@@ -1,11 +1,11 @@
 {
   "name": "build-deploy-tools",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "构建部署工具包 - 支持文件复制、SVN操作、系统通知确认等功能，具有科技感进度条和现代化UI",
   "main": "index.js",
   "bin": {
-    "build-copy": "./bin/build-copy.js",
-    "test-notification": "./bin/test-notification.js"
+    "build-copy": "bin/build-copy.js",
+    "test-notification": "bin/test-notification.js"
   },
   "scripts": {
     "test": "node bin/test-notification.js",
