@@ -1,6 +1,6 @@
 {
   "name": "build-deploy-tools",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "构建部署工具包 - 支持文件复制、SVN操作、系统通知确认等功能，具有科技感进度条和现代化UI",
   "main": "index.js",
   "bin": {
@@ -58,10 +58,8 @@
     "README.md",
     "CHANGELOG.md",
     "LICENSE",
-    "INSTALL.md",
-    "QUICKSTART.zh-cn.md",
     "example.config.js",
-    "integration-examples.md",
-    "SMART-COMMIT-EXAMPLES.md"
+    "env.example",
+    "docs/"
   ]
 }

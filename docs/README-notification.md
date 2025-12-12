@@ -135,13 +135,28 @@ notify('完成', '操作已完成', {
 
 ### 环境变量
 
+#### 📁 目录和文件配置
+
+| 变量                      | 作用                    | 示例                            |
+| ------------------------- | ----------------------- | ------------------------------- |
+| `TARGET_DIR`              | 指定目标目录            | `TARGET_DIR=D:/Work/Vue3/myproject` |
+| `SOURCE_DIR`              | 指定源目录              | `SOURCE_DIR=./dist`             |
+| `BUILD_NAME`              | 指定构建文件名          | `BUILD_NAME=vam3`               |
+| `npm_config_target`       | 指定目标目录（npm配置） | `npm_config_target=D:/Work/Vue3/myproject` |
+| `npm_config_source`       | 指定源目录（npm配置）   | `npm_config_source=./dist`      |
+| `npm_config_build`        | 指定构建文件名（npm配置）| `npm_config_build=vam3`         |
+
+#### 🤖 自动化配置
+
 | 变量                      | 作用                    | 示例                            |
 | ------------------------- | ----------------------- | ------------------------------- |
 | `CI`                      | CI 环境自动启用自动模式 | `CI=true`                       |
-| `npm_config_auto`         | 启用自动模式            | `npm_config_auto=true`          |
-| `npm_config_commit`       | 启用自动提交            | `npm_config_commit=true`        |
-| `npm_config_notification` | 控制通知功能            | `npm_config_notification=false` |
-| `npm_config_build`        | 指定构建文件名          | `npm_config_build=vam3`         |
+| `AUTO_MODE`               | 启用自动模式            | `AUTO_MODE=true`                |
+| `AUTO_COMMIT`             | 启用自动提交            | `AUTO_COMMIT=true`              |
+| `npm_config_auto`         | 启用自动模式（npm配置） | `npm_config_auto=true`          |
+| `npm_config_commit_cli`   | 启用自动提交（npm配置） | `npm_config_commit_cli=true`    |
+| `npm_config_notification` | 控制通知功能（npm配置） | `npm_config_notification=false` |
+| `USE_NOTIFICATION`        | 控制通知功能            | `USE_NOTIFICATION=false`        |
 
 ### 命令行参数
 
@@ -151,6 +166,8 @@ notify('完成', '操作已完成', {
 | `--commit`          | 启用自动提交   | `node build-copy.js --commit`          |
 | `--no-notification` | 禁用通知       | `node build-copy.js --no-notification` |
 | `--build=filename`  | 指定构建文件名 | `node build-copy.js --build=vam3`      |
+| `--target=<path>`   | 指定目标目录   | `node build-copy.js --target=D:/Projects` |
+| `--source=<path>`   | 指定源目录     | `node build-copy.js --source=./dist`   |
 
 ## 测试功能
 

@@ -11,8 +11,8 @@ jest.config.js
 webpack.config.js
 rollup.config.js
 
-# 文档源文件
-docs/
+# 文档源文件（注意：docs/ 在 package.json 的 files 字段中，会被包含）
+# docs/ 已通过 package.json 的 files 字段显式包含
 examples/
 
 # 开发依赖和构建脚本

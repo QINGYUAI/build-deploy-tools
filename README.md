@@ -56,8 +56,11 @@ build-copy --auto
 # 自动模式 + 自动提交 SVN
 build-copy --auto --commit
 
-# 自定义构建文件名和目标目录
-build-copy --build=myapp --target=D:/Projects/deployment
+# 自定义构建文件名、源目录和目标目录
+build-copy --build=myapp --source=./dist --target=D:/Projects/deployment
+
+# 使用环境变量配置
+TARGET_DIR=D:/Projects/deployment BUILD_NAME=myapp build-copy --auto
 
 # 🆕 使用智能提交信息（v1.3.0+）
 build-copy --auto --commit  # 自动获取Git/SVN最近提交信息
@@ -126,7 +129,7 @@ async function deploy() {
     "test-notification": "test-notification"
   },
   "devDependencies": {
-    "build-deploy-tools": "^1.3.0"
+    "build-deploy-tools": "^1.5.0"
   }
 }
 ```
@@ -385,6 +388,7 @@ buildAndDeploy()
 | `--no-notification` | 禁用系统通知 | `build-copy --no-notification` |
 | `--build=<name>` | 指定构建文件名 | `build-copy --build=myapp` |
 | `--target=<path>` | 指定目标目录 | `build-copy --target=D:/Projects` |
+| 🆕 `--source=<path>` | 指定源目录 | `build-copy --source=./dist` |
 | 🆕 `--message=<信息>` | 自定义提交信息 | `build-copy --message="修复bug"` |
 | 🆕 `--commit-message=<信息>` | 自定义提交信息（别名） | `build-copy --commit-message="版本发布"` |
 | 🆕 `--no-vcs-history` | 禁用版本控制历史 | `build-copy --no-vcs-history` |
@@ -394,13 +398,50 @@ buildAndDeploy()
 
 ### 环境变量
 
+#### 📁 目录和文件配置
+
+| 变量 | 说明 | 示例 |
+|------|------|------|
+| `TARGET_DIR=<目录>` | 指定目标目录（优先级高于默认值） | `TARGET_DIR=D:/Work/Vue3/myproject build-copy` |
+| `SOURCE_DIR=<目录>` | 指定源目录（优先级高于默认值） | `SOURCE_DIR=./dist build-copy` |
+| `BUILD_NAME=<文件名>` | 指定构建文件名（优先级高于默认值） | `BUILD_NAME=myapp build-copy` |
+| `npm_config_target=<目录>` | 指定目标目录（npm配置方式） | `npm run build-copy --target=D:/Work/Vue3/myproject` |
+| `npm_config_source=<目录>` | 指定源目录（npm配置方式） | `npm run build-copy --source=./dist` |
+| `npm_config_build=<文件名>` | 指定构建文件名（npm配置方式） | `npm run build-copy --build=myapp` |
+
+#### 🤖 自动化配置
+
 | 变量 | 说明 | 示例 |
 |------|------|------|
 | `CI=true` | CI 环境自动启用自动模式 | `CI=true build-copy` |
-| `npm_config_auto=true` | 启用自动模式 | `npm run build-copy --auto` |
-| `npm_config_commit_cli=true` | 启用自动提交 | `npm run build-copy --commit` |
-| `npm_config_notification=false` | 禁用通知 | `npm run build-copy --notification=false` |
-| `npm_config_build=filename` | 指定构建文件名 | `npm run build-copy --build=myapp` |
+| `AUTO_MODE=true` | 启用自动模式 | `AUTO_MODE=true build-copy` |
+| `AUTO_COMMIT=true` | 启用自动提交 | `AUTO_COMMIT=true build-copy` |
+| `npm_config_auto=true` | 启用自动模式（npm配置方式） | `npm run build-copy --auto` |
+| `npm_config_commit_cli=true` | 启用自动提交（npm配置方式） | `npm run build-copy --commit` |
+| `npm_config_notification=false` | 禁用通知（npm配置方式） | `npm run build-copy --notification=false` |
+| `USE_NOTIFICATION=false` | 禁用通知（环境变量方式） | `USE_NOTIFICATION=false build-copy` |
+
+#### 📝 提交配置
+
+| 变量 | 说明 | 示例 |
+|------|------|------|
+| `COMMIT_MESSAGE=<信息>` | 自定义提交信息 | `COMMIT_MESSAGE="修复登录问题" build-copy` |
+| `USE_VCS_HISTORY=false` | 禁用版本控制历史（默认true） | `USE_VCS_HISTORY=false build-copy` |
+
+#### 🔄 重试配置
+
+| 变量 | 说明 | 示例 |
+|------|------|------|
+| `MAX_RETRIES=<次数>` | 最大重试次数 | `MAX_RETRIES=5 build-copy` |
+| `RETRY_DELAY=<毫秒>` | 重试延迟时间 | `RETRY_DELAY=3000 build-copy` |
+
+#### 📋 优先级说明
+
+环境变量的优先级顺序（从高到低）：
+1. **命令行参数** - `--target=`, `--source=`, `--build=` 等
+2. **npm配置** - `npm_config_*` 环境变量
+3. **环境变量** - `TARGET_DIR`, `SOURCE_DIR`, `BUILD_NAME` 等
+4. **默认值** - 代码中定义的默认值
 
 ## 🧠 智能提交信息功能 (v1.3.0+)
 
@@ -466,13 +507,13 @@ await tools.executeBuildCopy({
 - ✅ **macOS** (macOS 10.14+)
 - ✅ **Linux** (Ubuntu, CentOS, 等)
 
-## 📖 详细文档
+## 📚 文档
 
-- [📘 安装指南](./INSTALL.md) - 详细的安装和配置说明
-- [🚀 快速开始](./QUICKSTART.zh-cn.md) - 中文快速开始指南
-- [📝 更新日志](./CHANGELOG.md) - 版本更新历史
-- [⚙️ 配置示例](./example.config.js) - 完整的配置示例
-- 🆕 [🧠 智能提交信息示例](./SMART-COMMIT-EXAMPLES.md) - 智能提交信息功能详细指南
+**快速导航**: [📘 安装指南](./docs/INSTALL.md) | [🚀 快速开始](./docs/QUICKSTART.zh-cn.md) | [📚 完整文档](./docs/README.md)
+
+**详细文档**: [通知功能](./docs/README-notification.md) | [集成示例](./docs/integration-examples.md) | [智能提交信息](./docs/SMART-COMMIT-EXAMPLES.md) | [性能优化](./docs/PERFORMANCE-OPTIMIZATION.md)
+
+**其他**: [更新日志](./CHANGELOG.md) | [配置示例](./example.config.js)
 
 ## 🛠️ API 文档
 
@@ -562,11 +603,12 @@ npm run deploy
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
+
 ## 🔗 相关链接
 
-- [npm 包](https://www.npmjs.com/package/build-deploy-tools)
-- [问题反馈](https://github.com/your-username/build-deploy-tools/issues)
-- [更新日志](CHANGELOG.md)
+- [📦 npm 包](https://www.npmjs.com/package/build-deploy-tools)
+- [🐛 问题反馈](https://github.com/QINGYUAI/build-deploy-tools/issues)
+- [📝 更新日志](./CHANGELOG.md)
 
 ---
 

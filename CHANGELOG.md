@@ -5,11 +5,37 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.6.0] - 2024-12-19
+
+### 新增
+- 🌟 **扩展环境变量支持** - 新增多个环境变量配置选项
+  - `TARGET_DIR` / `npm_config_target` - 指定目标目录
+  - `SOURCE_DIR` / `npm_config_source` - 指定源目录
+  - `BUILD_NAME` - 指定构建文件名（补充 `npm_config_build`）
+  - `AUTO_MODE` - 启用自动模式（补充 `npm_config_auto`）
+  - `AUTO_COMMIT` - 启用自动提交（补充 `npm_config_commit_cli`）
+  - `USE_NOTIFICATION` - 控制通知功能（补充 `npm_config_notification`）
+  - `COMMIT_MESSAGE` - 自定义提交信息
+  - `USE_VCS_HISTORY` - 控制是否使用版本控制历史
+  - `MAX_RETRIES` - 最大重试次数
+  - `RETRY_DELAY` - 重试延迟时间
+- 📝 **新增工具函数** - `getTargetDir()`, `getSourceDir()`, `getEnvConfig()`
+- 📄 **环境变量示例文件** - 创建 `env.example` 文件
+- 🔧 **命令行参数增强** - 添加 `--source=` 参数支持
+- 📚 **文档结构优化** - 创建 `docs/` 文件夹，整理所有文档
+
+### 改进
+- ✨ 优化环境变量读取逻辑，支持优先级机制
+- 📚 更新所有文档，添加完整的环境变量说明
+- 🎯 统一环境变量命名规范
+- 📖 完善安装指南和使用文档，更新为npm包使用方式
+- 🔗 优化文档链接和导航结构
+
 ## [未发布]
 
 ### 计划中
 - 支持更多 VCS 系统（Git, Mercurial）
-- 添加配置文件支持
+- 添加配置文件支持（.env 文件自动加载）
 - 支持插件系统
 - 提供 Web 界面
 - 添加更多测试用例

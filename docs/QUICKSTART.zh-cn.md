@@ -13,89 +13,40 @@
 - 🔗 **SVN集成** - 完整的 SVN 操作支持
 - 🛠️ **命令行工具** - 便捷的 CLI 命令
 
-## 🚀 立即使用
+## 🚀 5分钟快速上手
 
-### 1. 安装依赖
-
-```bash
-cd /d/MyWeb/scripts
-npm install
-```
-
-### 2. 测试功能
+### 步骤 1: 安装
 
 ```bash
-# 测试通知功能
-node bin/test-notification.js
+# 全局安装（推荐）
+npm install -g build-deploy-tools
 
-# 查看构建复制工具帮助
-node bin/build-copy.js --help
+# 或项目本地安装
+npm install build-deploy-tools --save-dev
 ```
 
-### 3. 基本使用
+### 步骤 2: 基本使用
 
 ```bash
-# 交互模式（推荐首次使用）
-node bin/build-copy.js
+# 交互模式（首次使用推荐）
+build-copy
 
-# 自动模式
-node bin/build-copy.js --auto
+# 自动模式（跳过确认）
+build-copy --auto
 
-# 自动模式 + 自动提交
-node bin/build-copy.js --auto --commit
+# 自动模式 + 自动提交到SVN
+build-copy --auto --commit
+
+# 自定义配置
+build-copy --build=myapp --target=D:/Projects/deployment --auto
 ```
 
-## 📦 发布为npm包
+### 步骤 3: 集成到项目
 
-### 1. 修改package.json
-
-```bash
-# 编辑包名（必须唯一）
-# 将 "name": "build-deploy-tools" 改为您的包名
-# 例如: "name": "@yourname/build-deploy-tools"
-```
-
-### 2. 发布到npm
-
-```bash
-# 登录npm
-npm login
-
-# 发布包
-npm publish
-```
-
-### 3. 全局安装使用
-
-```bash
-# 安装您发布的包
-npm install -g @yourname/build-deploy-tools
-
-# 直接使用命令
-build-copy --help
-test-notification --help
-```
-
-## 🔧 集成到现有项目
-
-### 方式1: 本地使用
-
-```bash
-# 复制到您的项目
-cp -r . /path/to/your/project/tools/
-
-# 在项目中使用
-node tools/bin/build-copy.js
-```
-
-### 方式2: 包依赖
+在 `package.json` 中添加脚本：
 
 ```json
-// package.json
 {
-  "devDependencies": {
-    "@yourname/build-deploy-tools": "^1.0.0"
-  },
   "scripts": {
     "build": "vite build",
     "deploy": "npm run build && build-copy --auto",
@@ -107,7 +58,7 @@ node tools/bin/build-copy.js
 ### 方式3: 编程使用
 
 ```javascript
-const { BuildDeployTools } = require('@yourname/build-deploy-tools')
+const { BuildDeployTools } = require('build-deploy-tools')
 
 const tools = new BuildDeployTools()
 
@@ -128,18 +79,46 @@ deploy()
 ### 环境变量配置
 
 ```bash
-# .env 文件
-CI=true                          # CI环境模式
-npm_config_auto=true             # 自动模式
-npm_config_commit_cli=true       # 自动提交
-npm_config_notification=false    # 禁用通知
-npm_config_build=myapp          # 构建文件名
+# .env 文件示例
+# 目录和文件配置
+TARGET_DIR=D:/Work/Vue3/myproject    # 目标目录
+SOURCE_DIR=./dist                     # 源目录
+BUILD_NAME=myapp                      # 构建文件名
+
+# 自动化配置
+CI=true                                # CI环境模式
+AUTO_MODE=true                        # 自动模式
+AUTO_COMMIT=true                      # 自动提交
+USE_NOTIFICATION=false                # 禁用通知
+
+# npm配置方式（通过 npm run script --key=value）
+npm_config_auto=true                  # 自动模式
+npm_config_commit_cli=true            # 自动提交
+npm_config_notification=false         # 禁用通知
+npm_config_build=myapp               # 构建文件名
+npm_config_target=D:/Work/Vue3/myproject  # 目标目录
+npm_config_source=./dist              # 源目录
+
+# 提交配置
+COMMIT_MESSAGE="修复登录问题"          # 自定义提交信息
+USE_VCS_HISTORY=true                  # 使用版本控制历史
+
+# 重试配置
+MAX_RETRIES=5                         # 最大重试次数
+RETRY_DELAY=3000                      # 重试延迟（毫秒）
 ```
 
 ### 命令行参数
 
 ```bash
+# 基本使用
 build-copy --build=myapp --target=D:/Projects --auto --commit
+
+# 指定源目录和目标目录
+build-copy --source=./dist --target=D:/Projects --auto --commit
+
+# 使用环境变量
+TARGET_DIR=D:/Projects SOURCE_DIR=./dist BUILD_NAME=myapp build-copy --auto
 ```
 
 ## 🔍 与原脚本对比
@@ -167,11 +146,10 @@ build-copy --build=myapp --target=D:/Projects --auto --commit
 
 2. **使用新版本**
    ```bash
-   # 替代原来的使用方式
-   # 原: node scripts/build-copy.js
-   # 新: node bin/build-copy.js
-   
-   # 或者安装后直接使用
+   # 使用方式
+   # 全局安装后: build-copy
+   # 项目本地安装: npm run build-copy
+   # 临时使用: npx build-deploy-tools build-copy
    # build-copy
    ```
 
@@ -179,7 +157,7 @@ build-copy --build=myapp --target=D:/Projects --auto --commit
    ```json
    {
      "scripts": {
-       "build-copy": "node bin/build-copy.js",
+       "build-copy": "build-copy",
        "deploy": "npm run build && npm run build-copy -- --auto"
      }
    }

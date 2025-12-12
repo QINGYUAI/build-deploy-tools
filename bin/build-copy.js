@@ -36,12 +36,17 @@ const { BuildDeployTools, utils, notification } = require('../index')
  */
 function parseArguments () {
   const args = process.argv.slice(2)
+
+  // 从环境变量获取默认值
+  const envConfig = utils.getEnvConfig()
+
   const config = {
     fileName: utils.getFileName(),
-    targetParentDir: 'D:/Work/Vue3/yiyumsaas', // 默认目标目录
+    targetParentDir: utils.getTargetDir('D:/Work/Vue3/yiyumsaas'), // 从环境变量或默认值获取目标目录
+    sourceDir: null, // 将在后面设置
     autoCommit: null, // null表示使用配置自动判断
-    commitMessage: null, // 自定义提交信息
-    useVcsHistory: true, // 是否使用版本控制历史
+    commitMessage: process.env.COMMIT_MESSAGE || null, // 从环境变量获取自定义提交信息
+    useVcsHistory: process.env.USE_VCS_HISTORY !== 'false', // 从环境变量获取是否使用版本控制历史
     commitOptions: {}, // 提交信息格式化选项
     showHelp: false
   }
@@ -53,6 +58,8 @@ function parseArguments () {
       config.fileName = arg.split('=')[1]
     } else if (arg.startsWith('--target=')) {
       config.targetParentDir = arg.split('=')[1]
+    } else if (arg.startsWith('--source=')) {
+      config.sourceDir = arg.split('=')[1]
     } else if (arg.startsWith('--message=')) {
       config.commitMessage = arg.split('=')[1]
     } else if (arg.startsWith('--commit-message=')) {
@@ -90,7 +97,8 @@ function showHelp () {
 
 选项：
   --build=<文件名>        指定构建文件名 (默认: vam3)
-  --target=<目录>         指定目标父目录 (默认: D:/Work/Vue3/development)
+  --target=<目录>         指定目标父目录 (默认: D:/Work/Vue3/yiyumsaas)
+  --source=<目录>         指定源目录 (默认: 使用构建文件名)
   --auto                 启用自动模式
   --commit               强制自动提交到SVN
   --no-commit            禁止提交到SVN
@@ -104,11 +112,32 @@ function showHelp () {
   --help, -h             显示此帮助信息
 
 环境变量：
+  # 基础配置
+  TARGET_DIR=<目录>             # 指定目标目录（优先级高于默认值）
+  SOURCE_DIR=<目录>             # 指定源目录（优先级高于默认值）
+  BUILD_NAME=<文件名>           # 指定构建文件名（优先级高于默认值）
+  
+  # npm配置（通过 npm run script --key=value 或 export npm_config_key=value）
+  npm_config_target=<目录>      # 指定目标目录
+  npm_config_source=<目录>      # 指定源目录
+  npm_config_build=<文件名>     # 指定构建文件名
+  
+  # 自动化配置
   CI=true                       # CI环境自动启用自动模式
-  npm_config_auto=true          # 启用自动模式
-  npm_config_commit_cli=true    # 启用自动提交
+  AUTO_MODE=true                # 启用自动模式
+  AUTO_COMMIT=true              # 启用自动提交
+  npm_config_auto=true          # 启用自动模式（npm配置方式）
+  npm_config_commit_cli=true    # 启用自动提交（npm配置方式）
   npm_config_notification=false # 禁用通知
-  npm_config_build=filename     # 指定构建文件名
+  USE_NOTIFICATION=false        # 禁用通知（环境变量方式）
+  
+  # 提交配置
+  COMMIT_MESSAGE=<信息>         # 自定义提交信息
+  USE_VCS_HISTORY=false         # 禁用版本控制历史（默认true）
+  
+  # 重试配置
+  MAX_RETRIES=<次数>            # 最大重试次数
+  RETRY_DELAY=<毫秒>            # 重试延迟时间
 
 示例：
   build-copy
@@ -144,8 +173,25 @@ async function main () {
     return
   }
 
-  // 构建源目录路径 - 从当前工作目录开始，而不是从工具安装目录
-  const sourceDir = path.resolve(process.cwd(), config.fileName)
+  // 构建源目录路径 - 优先使用环境变量或命令行参数，否则使用默认逻辑
+  let sourceDir = config.sourceDir
+  if (!sourceDir) {
+    // 尝试从环境变量获取源目录
+    const envSourceDir = utils.getSourceDir()
+    if (envSourceDir) {
+      sourceDir = path.isAbsolute(envSourceDir)
+        ? envSourceDir
+        : path.resolve(process.cwd(), envSourceDir)
+    } else {
+      // 默认逻辑：从当前工作目录开始，使用构建文件名
+      sourceDir = path.resolve(process.cwd(), config.fileName)
+    }
+  } else {
+    // 如果命令行参数指定了源目录，确保是绝对路径
+    sourceDir = path.isAbsolute(sourceDir)
+      ? sourceDir
+      : path.resolve(process.cwd(), sourceDir)
+  }
   config.sourceDir = sourceDir
 
   // 显示运行信息
