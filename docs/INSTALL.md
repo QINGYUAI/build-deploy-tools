@@ -45,6 +45,9 @@ cd build-deploy-tools
 # 安装依赖
 npm install
 
+# 安装 dotenv（可选，用于支持 .env 文件）
+npm install dotenv
+
 # 本地链接（可选，用于开发测试）
 npm link
 
@@ -232,6 +235,9 @@ build-copy --version
 ```bash
 # 复制示例文件
 cp env.example .env
+
+# 安装 dotenv（如果还没安装，用于支持 .env 文件）
+npm install dotenv
 
 # 编辑 .env 文件，设置你的配置
 # TARGET_DIR=D:/Work/Vue3/myproject

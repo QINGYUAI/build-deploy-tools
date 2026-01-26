@@ -30,6 +30,8 @@
 const path = require('path')
 const { BuildDeployTools, utils, notification } = require('../index')
 
+// .env 文件会在 utils 模块加载时自动加载
+
 /**
  * 解析命令行参数
  * @returns {Object} 解析后的配置对象

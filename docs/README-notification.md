@@ -50,11 +50,11 @@
 
 ```bash
 # 使用系统通知确认
-node scripts/build-copy.js
+build-copy
 npm run build-copy
 
 # 使用命令行确认
-node scripts/build-copy.js --no-notification
+build-copy --no-notification
 npm run build-copy --no-notification
 ```
 
@@ -62,11 +62,11 @@ npm run build-copy --no-notification
 
 ```bash
 # 自动模式（不自动提交）
-node scripts/build-copy.js --auto
+build-copy --auto
 npm run build-copy --auto
 
 # 自动模式 + 自动提交
-node scripts/build-copy.js --auto --commit
+build-copy --auto --commit
 npm run build-copy --auto --commit
 ```
 
@@ -162,12 +162,12 @@ notify('完成', '操作已完成', {
 
 | 参数                | 作用           | 示例                                   |
 | ------------------- | -------------- | -------------------------------------- |
-| `--auto`            | 启用自动模式   | `node build-copy.js --auto`            |
-| `--commit`          | 启用自动提交   | `node build-copy.js --commit`          |
-| `--no-notification` | 禁用通知       | `node build-copy.js --no-notification` |
-| `--build=filename`  | 指定构建文件名 | `node build-copy.js --build=vam3`      |
-| `--target=<path>`   | 指定目标目录   | `node build-copy.js --target=D:/Projects` |
-| `--source=<path>`   | 指定源目录     | `node build-copy.js --source=./dist`   |
+| `--auto`            | 启用自动模式   | `build-copy --auto`            |
+| `--commit`          | 启用自动提交   | `build-copy --commit`          |
+| `--no-notification` | 禁用通知       | `build-copy --no-notification` |
+| `--build=filename`  | 指定构建文件名 | `build-copy --build=vam3`      |
+| `--target=<path>`   | 指定目标目录   | `build-copy --target=D:/Projects` |
+| `--source=<path>`   | 指定源目录     | `build-copy --source=./dist`   |
 
 ## 测试功能
 
@@ -175,16 +175,16 @@ notify('完成', '操作已完成', {
 
 ```bash
 # 测试交互模式
-node scripts/test-notification.js
+test-notification
 
 # 测试自动模式
-node scripts/test-notification.js --auto
+test-notification --auto
 
 # 测试自动提交
-node scripts/test-notification.js --auto --commit
+test-notification --auto --commit
 
 # 测试命令行模式
-node scripts/test-notification.js --no-notification
+test-notification --no-notification
 ```
 
 ### 测试内容
@@ -287,7 +287,7 @@ npm run build-copy --commit
 
    ```bash
    # 脚本启动时会显示当前运行模式
-   node scripts/build-copy.js
+   build-copy
    ```
 
 2. **测试基本通知**

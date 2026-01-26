@@ -1,5 +1,0 @@
-[33m39f7a6b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m chore: 更新默认目标目录为开发环境路径
-[33m4bc9897[m chore: 发布v1.2.3 - 添加GitHub仓库集成
-[33mb580fdc[m[33m ([m[1;33mtag: [m[1;33mv1.2.3[m[33m)[m 1.2.3
-[33m5f92508[m 更新 package.json 中的仓库信息，修改为 QINGYUAI 的 GitHub 地址
-[33ma9593ea[m Initial commit: Build Deploy Tools v1.2.2

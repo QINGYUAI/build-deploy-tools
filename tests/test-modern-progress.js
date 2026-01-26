@@ -12,9 +12,9 @@ const {
   showTechSuccess,
   showTechError,
   TECH_GRADIENTS
-} = require('./lib/modern-progress')
+} = require('../lib/modern-progress')
 
-const { delay } = require('./lib/utils')
+const { delay } = require('../lib/utils')
 
 /**
  * 测试单一进度条

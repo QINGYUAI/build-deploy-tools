@@ -1,6 +1,6 @@
 {
   "name": "build-deploy-tools",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "构建部署工具包 - 支持文件复制、SVN操作、系统通知确认等功能，具有科技感进度条和现代化UI",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,8 @@
   "scripts": {
     "test": "node bin/test-notification.js",
     "build-copy": "node bin/build-copy.js",
-    "test-progress": "node test-modern-progress.js"
+    "test-progress": "node tests/test-modern-progress.js",
+    "test-env": "node tests/test-env-load.js"
   },
   "keywords": [
     "build",
@@ -32,13 +33,16 @@
   "author": "qingyuai",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^11.1.1",
-    "node-notifier": "^10.0.1",
-    "cli-progress": "^3.12.0",
-    "ora": "^5.4.1",
     "chalk": "^4.1.2",
+    "cli-progress": "^3.12.0",
+    "figures": "^3.2.0",
+    "fs-extra": "^11.1.1",
     "gradient-string": "^2.0.2",
-    "figures": "^3.2.0"
+    "node-notifier": "^10.0.1",
+    "ora": "^5.4.1"
+  },
+  "optionalDependencies": {
+    "dotenv": "^16.6.1"
   },
   "engines": {
     "node": ">=14.0.0"

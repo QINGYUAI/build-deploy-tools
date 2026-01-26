@@ -16,10 +16,8 @@ rollup.config.js
 examples/
 
 # 开发依赖和构建脚本
-scripts/build-copy.js
-scripts/test-notification.js
-QUICKSTART.md
-README-notification.md
+# 注意：bin/ 目录中的文件会被包含（在 package.json 的 bin 字段中）
+# 注意：docs/ 目录会被包含（在 package.json 的 files 字段中）
 
 # IDE 配置
 .vscode/

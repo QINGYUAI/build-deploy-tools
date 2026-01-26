@@ -13,6 +13,7 @@
 - **[通知功能](./README-notification.md)** - 系统通知功能详解
 - **[集成示例](./integration-examples.md)** - Webpack、Vite、Vue CLI 等集成方案
 - **[智能提交信息](./SMART-COMMIT-EXAMPLES.md)** - 自动获取 Git/SVN 提交信息
+- **[环境变量使用](./ENV-USAGE.md)** - .env 文件和环境变量配置指南
 
 ### 进阶内容
 - **[性能优化](./PERFORMANCE-OPTIMIZATION.md)** - 性能优化建议和最佳实践

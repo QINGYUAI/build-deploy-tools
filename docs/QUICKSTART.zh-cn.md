@@ -23,7 +23,25 @@ npm install -g build-deploy-tools
 
 # 或项目本地安装
 npm install build-deploy-tools --save-dev
+
+# 安装 dotenv（可选，用于支持 .env 文件）
+npm install dotenv
 ```
+
+### 步骤 1.5: 配置 .env 文件（推荐）
+
+```bash
+# 复制示例文件
+cp env.example .env
+
+# 编辑 .env 文件，设置你的配置
+# TARGET_DIR=D:/Work/Vue3/myproject
+# BUILD_NAME=myapp
+# AUTO_MODE=true
+# AUTO_COMMIT=true
+```
+
+详细说明请参考：[📖 环境变量使用指南](./ENV-USAGE.md)
 
 ### 步骤 2: 基本使用
 

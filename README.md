@@ -62,6 +62,11 @@ build-copy --build=myapp --source=./dist --target=D:/Projects/deployment
 # 使用环境变量配置
 TARGET_DIR=D:/Projects/deployment BUILD_NAME=myapp build-copy --auto
 
+# 或使用 .env 文件（推荐）
+# 1. 安装 dotenv: npm install dotenv
+# 2. 复制 env.example 为 .env 并编辑
+# 3. 直接运行: build-copy
+
 # 🆕 使用智能提交信息（v1.3.0+）
 build-copy --auto --commit  # 自动获取Git/SVN最近提交信息
 
@@ -117,6 +122,27 @@ async function deploy() {
 ```
 
 ## 📚 快速配置
+
+### .env 文件配置（推荐）
+
+最简单的方式是使用 `.env` 文件：
+
+```bash
+# 1. 安装 dotenv
+npm install dotenv
+
+# 2. 复制示例文件
+cp env.example .env
+
+# 3. 编辑 .env 文件
+# TARGET_DIR=D:/Work/Vue3/myproject
+# BUILD_NAME=myapp
+# AUTO_MODE=true
+# AUTO_COMMIT=true
+
+# 4. 使用
+build-copy
+```
 
 ### package.json 集成
 
@@ -440,8 +466,33 @@ buildAndDeploy()
 环境变量的优先级顺序（从高到低）：
 1. **命令行参数** - `--target=`, `--source=`, `--build=` 等
 2. **npm配置** - `npm_config_*` 环境变量
-3. **环境变量** - `TARGET_DIR`, `SOURCE_DIR`, `BUILD_NAME` 等
-4. **默认值** - 代码中定义的默认值
+3. **系统环境变量** - `TARGET_DIR`, `SOURCE_DIR`, `BUILD_NAME` 等
+4. **`.env` 文件** - 项目根目录下的 `.env` 文件（需要安装 `dotenv`）
+5. **默认值** - 代码中定义的默认值
+
+#### 📄 使用 .env 文件（推荐）
+
+`.env` 文件是最方便的配置方式，适合本地开发环境：
+
+```bash
+# 1. 安装 dotenv（如果还没安装）
+npm install dotenv
+
+# 2. 复制示例文件
+cp env.example .env
+
+# 3. 编辑 .env 文件，设置你的配置
+# TARGET_DIR=D:/Work/Vue3/myproject
+# BUILD_NAME=myapp
+# AUTO_MODE=true
+
+# 4. 使用（.env 文件会自动加载）
+build-copy
+```
+
+**注意**：`dotenv` 是可选依赖，如果不安装，`.env` 文件不会被加载，但你可以使用系统环境变量或命令行参数。
+
+详细使用指南请参考：[📖 环境变量使用指南](./docs/ENV-USAGE.md)
 
 ## 🧠 智能提交信息功能 (v1.3.0+)
 
@@ -511,7 +562,7 @@ await tools.executeBuildCopy({
 
 **快速导航**: [📘 安装指南](./docs/INSTALL.md) | [🚀 快速开始](./docs/QUICKSTART.zh-cn.md) | [📚 完整文档](./docs/README.md)
 
-**详细文档**: [通知功能](./docs/README-notification.md) | [集成示例](./docs/integration-examples.md) | [智能提交信息](./docs/SMART-COMMIT-EXAMPLES.md) | [性能优化](./docs/PERFORMANCE-OPTIMIZATION.md)
+**详细文档**: [通知功能](./docs/README-notification.md) | [集成示例](./docs/integration-examples.md) | [智能提交信息](./docs/SMART-COMMIT-EXAMPLES.md) | [性能优化](./docs/PERFORMANCE-OPTIMIZATION.md) | [环境变量使用](./docs/ENV-USAGE.md)
 
 **其他**: [更新日志](./CHANGELOG.md) | [配置示例](./example.config.js)
 

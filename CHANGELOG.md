@@ -5,6 +5,25 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.6.1] - 2025-01-26
+
+### 修复
+- 🔧 **修复环境变量加载问题** - 添加 `.env` 文件自动加载支持
+  - 添加 `dotenv` 作为可选依赖
+  - 修复 `parseInt` 逻辑问题，正确处理 0 值
+  - 改进环境变量加载错误处理
+- 📚 **文档更新** - 更新所有文档，添加 `.env` 文件使用说明
+  - 新增环境变量使用指南 `docs/ENV-USAGE.md`
+  - 更新 README、QUICKSTART、INSTALL 等文档
+  - 添加环境变量测试脚本 `tests/test-env-load.js`
+
+### 改进
+- ✨ 优化项目结构，整理文件位置
+  - 移动测试文件到 `tests/` 目录
+  - 移动文档到 `docs/` 目录
+  - 删除重复文件和临时文件
+- 🔧 改进 `.env` 文件加载机制，添加调试信息支持
+
 ## [1.6.0] - 2024-12-19
 
 ### 新增
@@ -19,14 +38,21 @@
   - `USE_VCS_HISTORY` - 控制是否使用版本控制历史
   - `MAX_RETRIES` - 最大重试次数
   - `RETRY_DELAY` - 重试延迟时间
-- 📝 **新增工具函数** - `getTargetDir()`, `getSourceDir()`, `getEnvConfig()`
+- 📝 **新增工具函数** - `getTargetDir()`, `getSourceDir()`, `getEnvConfig()`, `loadEnvFile()`
 - 📄 **环境变量示例文件** - 创建 `env.example` 文件
 - 🔧 **命令行参数增强** - 添加 `--source=` 参数支持
 - 📚 **文档结构优化** - 创建 `docs/` 文件夹，整理所有文档
+- 🆕 **.env 文件支持** - 支持通过 `.env` 文件配置环境变量（需要安装 `dotenv`）
+  - 自动加载项目根目录下的 `.env` 文件
+  - `dotenv` 作为可选依赖，不影响未安装时的使用
+  - 添加环境变量加载测试脚本 `tests/test-env-load.js`
+- 📖 **新增文档** - 创建环境变量使用指南 `docs/ENV-USAGE.md`
 
 ### 改进
 - ✨ 优化环境变量读取逻辑，支持优先级机制
-- 📚 更新所有文档，添加完整的环境变量说明
+- 🔧 **修复 parseInt 逻辑问题** - 正确处理 `MAX_RETRIES` 和 `RETRY_DELAY` 的 0 值
+- 🔧 **改进 .env 文件加载** - 添加错误处理和调试信息
+- 📚 更新所有文档，添加完整的环境变量说明和 `.env` 文件使用指南
 - 🎯 统一环境变量命名规范
 - 📖 完善安装指南和使用文档，更新为npm包使用方式
 - 🔗 优化文档链接和导航结构

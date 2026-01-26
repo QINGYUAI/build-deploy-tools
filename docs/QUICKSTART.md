@@ -6,6 +6,29 @@
 
 ✅ **重要提醒**：本次更新完全兼容原有的自动化工作流，不会影响现有的构建和部署流程。
 
+### 📄 使用 .env 文件配置（推荐）
+
+最简单的方式是使用 `.env` 文件：
+
+```bash
+# 1. 安装 dotenv（如果还没安装）
+npm install dotenv
+
+# 2. 复制示例文件
+cp env.example .env
+
+# 3. 编辑 .env 文件，设置你的配置
+# TARGET_DIR=D:/Work/Vue3/myproject
+# BUILD_NAME=myapp
+# AUTO_MODE=true
+# AUTO_COMMIT=true
+
+# 4. 使用（.env 文件会自动加载）
+build-copy
+```
+
+详细说明请参考：[📖 环境变量使用指南](./ENV-USAGE.md)
+
 ### 基本使用
 
 #### 1. 交互模式（默认，和以前一样）
@@ -60,10 +83,10 @@ npm run build-copy --commit
 
 ```bash
 # 测试交互模式
-node scripts/test-notification.js
+test-notification
 
 # 测试自动模式
-node scripts/test-notification.js --auto --commit
+test-notification --auto --commit
 ```
 
 ## 📖 详细文档
@@ -88,7 +111,7 @@ node scripts/test-notification.js --auto --commit
 运行测试脚本验证功能：
 
 ```bash
-node scripts/test-notification.js --auto
+test-notification --auto
 ```
 
 ---
