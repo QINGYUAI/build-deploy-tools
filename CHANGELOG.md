@@ -5,6 +5,21 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.6.2] - 2025-01-26
+
+### 修复
+- 🔧 **调整环境变量优先级** - 命令行参数优先于 .env 文件配置
+  - 修改 `getFileName()`, `getTargetDir()`, `getSourceDir()` 函数
+  - 确保命令行参数（`--build=`, `--target=`, `--source=`）优先级最高
+  - 如果命令行参数不存在，再使用 .env 文件中的配置
+- 📚 **文档更新** - 更新优先级说明和使用示例
+  - 更新 README.md、env.example、ENV-USAGE.md
+  - 添加优先级测试脚本 `tests/test-priority.js`
+
+### 改进
+- ✨ 优化环境变量读取逻辑，明确优先级顺序
+- 🧪 新增优先级测试脚本，验证命令行参数优先于 .env 文件
+
 ## [1.6.1] - 2025-01-26
 
 ### 修复

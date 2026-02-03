@@ -4,11 +4,17 @@
 
 本项目支持多种方式配置环境变量，优先级从高到低如下：
 
-1. **命令行参数**（最高优先级）
+1. **命令行参数** ⭐（最高优先级，会覆盖其他所有配置）
 2. **npm 配置**（`npm_config_*` 环境变量）
-3. **系统环境变量**
-4. **`.env` 文件**（需要安装 `dotenv`）
-5. **默认值**（代码中定义）
+3. **系统环境变量和 `.env` 文件**（优先级相同）
+   - `.env` 文件会在模块加载时自动加载到环境变量中
+   - 如果同时设置了系统环境变量和 `.env` 文件，系统环境变量优先
+4. **默认值**（代码中定义）
+
+**重要**：命令行参数会优先于 `.env` 文件中的配置。例如：
+- `.env` 文件中设置了 `BUILD_NAME=IAC`
+- 命令行使用 `--build=myapp`
+- 最终会使用 `myapp`（命令行参数优先）
 
 ## 📁 使用 .env 文件
 
@@ -140,11 +146,24 @@ cp env.example .env
 # 3. 安装 dotenv（如果还没安装）
 npm install dotenv
 
-# 4. 运行
+# 4. 运行（会使用 .env 文件中的配置）
 build-copy
 ```
 
-### 示例2：使用系统环境变量
+### 示例2：命令行参数覆盖 .env 文件
+
+```bash
+# .env 文件中设置了 BUILD_NAME=myapp
+# 但命令行参数会优先
+
+build-copy --build=other-app
+# 结果：使用 other-app（命令行参数优先）
+
+build-copy
+# 结果：使用 myapp（.env 文件中的配置）
+```
+
+### 示例3：使用系统环境变量
 
 ```bash
 # Windows
@@ -160,9 +179,10 @@ export AUTO_MODE=true
 build-copy
 ```
 
-### 示例3：使用命令行参数（优先级最高）
+### 示例4：使用命令行参数（优先级最高）⭐
 
 ```bash
+# 命令行参数会覆盖 .env 文件和系统环境变量
 build-copy --target=D:/Work/Vue3/myproject --build=myapp --auto
 ```
 
