@@ -22,9 +22,13 @@
  *
  * 5. 自定义构建文件名：
  *    build-copy --build=myapp
+ *    npm run build-copy -- --build=myapp  (注意：使用 npm run 时需要双破折号 --)
  *
  * 6. 自定义目标目录：
  *    build-copy --target=D:/Work/Vue3/myproject
+ *    npm run build-copy -- --target=D:/Work/Vue3/myproject
+ *
+ * 注意：使用 npm run 时，需要在脚本参数前添加双破折号 -- 来分隔 npm 参数和脚本参数
  */
 
 const path = require('path')
@@ -177,17 +181,39 @@ async function main () {
 
   // 构建源目录路径 - 优先使用命令行参数，否则使用环境变量或构建文件名
   let sourceDir = config.sourceDir
+  
+  // 检查是否通过命令行参数指定了 --source=
+  const hasSourceArg = process.argv.slice(2).some(arg => arg.startsWith('--source='))
+  // 检查是否通过命令行参数指定了 --build=
+  const hasBuildArg = process.argv.slice(2).some(arg => arg.startsWith('--build='))
+  // 检查是否通过 npm run script --build= 指定了构建文件名（npm 会设置 npm_config_build）
+  const hasNpmConfigBuild = process.env.npm_config_build !== undefined
+  
   if (!sourceDir) {
-    // 尝试从环境变量获取源目录（包括从 .env 文件加载的）
-    const envSourceDir = utils.getSourceDir()
-    if (envSourceDir) {
-      // 如果 getSourceDir() 返回了值（可能是 SOURCE_DIR 或 BUILD_NAME）
-      sourceDir = path.isAbsolute(envSourceDir)
-        ? envSourceDir
-        : path.resolve(process.cwd(), envSourceDir)
-    } else {
-      // 如果 SOURCE_DIR 未设置，使用构建文件名（BUILD_NAME）作为目录名
+    if (hasSourceArg) {
+      // 如果命令行指定了 --source=，使用 getSourceDir() 获取（它会优先读取命令行参数）
+      const envSourceDir = utils.getSourceDir()
+      if (envSourceDir) {
+        sourceDir = path.isAbsolute(envSourceDir)
+          ? envSourceDir
+          : path.resolve(process.cwd(), envSourceDir)
+      }
+    } else if (hasBuildArg || hasNpmConfigBuild) {
+      // 如果命令行指定了 --build= 或通过 npm run script --build= 指定了构建文件名
+      // 且没有指定 --source=，使用构建文件名作为源目录
       sourceDir = path.resolve(process.cwd(), config.fileName)
+    } else {
+      // 尝试从环境变量获取源目录（包括从 .env 文件加载的）
+      const envSourceDir = utils.getSourceDir()
+      if (envSourceDir) {
+        // 如果 getSourceDir() 返回了值（可能是 SOURCE_DIR 或 BUILD_NAME）
+        sourceDir = path.isAbsolute(envSourceDir)
+          ? envSourceDir
+          : path.resolve(process.cwd(), envSourceDir)
+      } else {
+        // 如果 SOURCE_DIR 未设置，使用构建文件名（BUILD_NAME）作为目录名
+        sourceDir = path.resolve(process.cwd(), config.fileName)
+      }
     }
   } else {
     // 如果命令行参数指定了源目录，确保是绝对路径

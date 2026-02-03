@@ -1,0 +1,23 @@
+@media print {
+  /* 你所有打印的样式都放在这里 */
+  #header,
+  #footer,
+  #nav {
+    display: none !important;
+  }
+
+  @page {
+    /* size: A5 portrait; */
+    /* margin: 3.7cm 2.6cm 3.5cm; */
+    /* margin: 0; */
+
+    /* 纵向 */
+    /* size: portrait;  */
+ 
+    /* 横向 */
+    size: landscape;
+
+    /* 边距 上右下左 */
+    /* margin: 1cm 2cm 1cm 2cm; */
+  }
+}

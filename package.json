@@ -1,6 +1,6 @@
 {
   "name": "build-deploy-tools",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "构建部署工具包 - 支持文件复制、SVN操作、系统通知确认等功能，具有科技感进度条和现代化UI",
   "main": "index.js",
   "bin": {
@@ -11,7 +11,8 @@
     "test": "node bin/test-notification.js",
     "build-copy": "node bin/build-copy.js",
     "test-progress": "node tests/test-modern-progress.js",
-    "test-env": "node tests/test-env-load.js"
+    "test-env": "node tests/test-env-load.js",
+    "test-npm-config": "node tests/test-npm-config.js"
   },
   "keywords": [
     "build",

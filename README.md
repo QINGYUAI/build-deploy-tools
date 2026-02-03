@@ -433,9 +433,22 @@ buildAndDeploy()
 | `BUILD_NAME=<文件名>` | 指定构建文件名（如果 SOURCE_DIR 未设置，将作为源目录名） | `BUILD_NAME=myapp build-copy` |
 
 **注意**：如果 `SOURCE_DIR` 未设置，系统会自动使用 `BUILD_NAME` 对应的目录作为源目录。
-| `npm_config_target=<目录>` | 指定目标目录（npm配置方式） | `npm run build-copy --target=D:/Work/Vue3/myproject` |
-| `npm_config_source=<目录>` | 指定源目录（npm配置方式） | `npm run build-copy --source=./dist` |
-| `npm_config_build=<文件名>` | 指定构建文件名（npm配置方式） | `npm run build-copy --build=myapp` |
+| `npm_config_target=<目录>` | 指定目标目录（npm配置方式） | `npm run build-copy -- --target=D:/Work/Vue3/myproject` |
+| `npm_config_source=<目录>` | 指定源目录（npm配置方式） | `npm run build-copy -- --source=./dist` |
+| `npm_config_build=<文件名>` | 指定构建文件名（npm配置方式） | `npm run build-copy -- --build=myapp` |
+
+**注意**：使用 `npm run` 时，有两种方式传递参数：
+- ✅ **方式1（推荐）**：使用双破折号 `--` 分隔 npm 参数和脚本参数
+  ```bash
+  npm run build-copy -- --build=vam4
+  ```
+- ✅ **方式2**：直接传递参数（npm 会将 `--build=vam4` 转换为 `npm_config_build=vam4` 环境变量）
+  ```bash
+  npm run build-copy --build=vam4
+  ```
+  注意：虽然会有警告信息，但功能正常，源目录会正确使用 `vam4`。
+
+**推荐**：直接使用全局命令 `build-copy --build=vam4` 或 `npx build-deploy-tools build-copy --build=vam4`，无需双破折号，也不会有警告。
 
 #### 🤖 自动化配置
 
@@ -444,9 +457,9 @@ buildAndDeploy()
 | `CI=true` | CI 环境自动启用自动模式 | `CI=true build-copy` |
 | `AUTO_MODE=true` | 启用自动模式 | `AUTO_MODE=true build-copy` |
 | `AUTO_COMMIT=true` | 启用自动提交 | `AUTO_COMMIT=true build-copy` |
-| `npm_config_auto=true` | 启用自动模式（npm配置方式） | `npm run build-copy --auto` |
-| `npm_config_commit_cli=true` | 启用自动提交（npm配置方式） | `npm run build-copy --commit` |
-| `npm_config_notification=false` | 禁用通知（npm配置方式） | `npm run build-copy --notification=false` |
+| `npm_config_auto=true` | 启用自动模式（npm配置方式） | `npm run build-copy -- --auto` |
+| `npm_config_commit_cli=true` | 启用自动提交（npm配置方式） | `npm run build-copy -- --commit` |
+| `npm_config_notification=false` | 禁用通知（npm配置方式） | `npm run build-copy -- --notification=false` |
 | `USE_NOTIFICATION=false` | 禁用通知（环境变量方式） | `USE_NOTIFICATION=false build-copy` |
 
 #### 📝 提交配置
