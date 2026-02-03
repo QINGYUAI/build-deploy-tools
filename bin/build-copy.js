@@ -100,7 +100,7 @@ function showHelp () {
 选项：
   --build=<文件名>        指定构建文件名 (默认: vam3)
   --target=<目录>         指定目标父目录 (默认: D:/Work/Vue3/yiyumsaas)
-  --source=<目录>         指定源目录 (默认: 使用构建文件名)
+  --source=<目录>         指定源目录 (默认: 如果未设置，使用 BUILD_NAME 作为目录名)
   --auto                 启用自动模式
   --commit               强制自动提交到SVN
   --no-commit            禁止提交到SVN
@@ -175,17 +175,18 @@ async function main () {
     return
   }
 
-  // 构建源目录路径 - 优先使用环境变量或命令行参数，否则使用默认逻辑
+  // 构建源目录路径 - 优先使用命令行参数，否则使用环境变量或构建文件名
   let sourceDir = config.sourceDir
   if (!sourceDir) {
-    // 尝试从环境变量获取源目录
+    // 尝试从环境变量获取源目录（包括从 .env 文件加载的）
     const envSourceDir = utils.getSourceDir()
     if (envSourceDir) {
+      // 如果 getSourceDir() 返回了值（可能是 SOURCE_DIR 或 BUILD_NAME）
       sourceDir = path.isAbsolute(envSourceDir)
         ? envSourceDir
         : path.resolve(process.cwd(), envSourceDir)
     } else {
-      // 默认逻辑：从当前工作目录开始，使用构建文件名
+      // 如果 SOURCE_DIR 未设置，使用构建文件名（BUILD_NAME）作为目录名
       sourceDir = path.resolve(process.cwd(), config.fileName)
     }
   } else {

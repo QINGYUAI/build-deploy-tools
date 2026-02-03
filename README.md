@@ -430,7 +430,9 @@ buildAndDeploy()
 |------|------|------|
 | `TARGET_DIR=<目录>` | 指定目标目录（优先级高于默认值） | `TARGET_DIR=D:/Work/Vue3/myproject build-copy` |
 | `SOURCE_DIR=<目录>` | 指定源目录（优先级高于默认值） | `SOURCE_DIR=./dist build-copy` |
-| `BUILD_NAME=<文件名>` | 指定构建文件名（优先级高于默认值） | `BUILD_NAME=myapp build-copy` |
+| `BUILD_NAME=<文件名>` | 指定构建文件名（如果 SOURCE_DIR 未设置，将作为源目录名） | `BUILD_NAME=myapp build-copy` |
+
+**注意**：如果 `SOURCE_DIR` 未设置，系统会自动使用 `BUILD_NAME` 对应的目录作为源目录。
 | `npm_config_target=<目录>` | 指定目标目录（npm配置方式） | `npm run build-copy --target=D:/Work/Vue3/myproject` |
 | `npm_config_source=<目录>` | 指定源目录（npm配置方式） | `npm run build-copy --source=./dist` |
 | `npm_config_build=<文件名>` | 指定构建文件名（npm配置方式） | `npm run build-copy --build=myapp` |

@@ -105,7 +105,10 @@ echo $TARGET_DIR
 |--------|------|------|
 | `TARGET_DIR` | 目标目录（部署目录） | `TARGET_DIR=D:/Work/Vue3/myproject` |
 | `SOURCE_DIR` | 源目录（构建输出目录） | `SOURCE_DIR=./dist` |
-| `BUILD_NAME` | 构建文件名 | `BUILD_NAME=myapp` |
+| `BUILD_NAME` | 构建文件名（如果 SOURCE_DIR 未设置，将作为源目录名） | `BUILD_NAME=myapp` |
+
+**注意**：如果 `SOURCE_DIR` 未设置，系统会自动使用 `BUILD_NAME` 对应的目录作为源目录。
+例如：`BUILD_NAME=IAC` → 源目录为 `./IAC`
 
 ### 🤖 自动化配置
 
@@ -161,6 +164,21 @@ build-copy --build=other-app
 
 build-copy
 # 结果：使用 myapp（.env 文件中的配置）
+```
+
+### 示例3：SOURCE_DIR 未设置时使用 BUILD_NAME
+
+```bash
+# .env 文件中设置了 BUILD_NAME=IAC，但没有设置 SOURCE_DIR
+# 系统会自动使用 BUILD_NAME 作为源目录
+
+build-copy
+# 结果：源目录为 ./IAC（使用 BUILD_NAME）
+
+# 如果设置了 SOURCE_DIR，则使用 SOURCE_DIR
+# SOURCE_DIR=./dist
+build-copy
+# 结果：源目录为 ./dist（使用 SOURCE_DIR）
 ```
 
 ### 示例3：使用系统环境变量

@@ -5,6 +5,19 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 并且本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.6.3] - 2025-01-26
+
+### 修复
+- 🔧 **修复源目录获取逻辑** - 当 SOURCE_DIR 未设置时，自动使用 BUILD_NAME 作为源目录
+  - 修改 `getSourceDir()` 函数，添加 BUILD_NAME 作为后备选项
+  - 优先级顺序：命令行参数 > npm配置 > SOURCE_DIR 环境变量 > BUILD_NAME > 默认值
+  - 更新相关文档说明和示例
+
+### 改进
+- ✨ 优化源目录获取逻辑，提供更智能的默认行为
+- 📚 更新文档，说明 SOURCE_DIR 和 BUILD_NAME 的关系
+- 🧪 新增测试脚本 `tests/test-source-dir.js` 验证源目录获取逻辑
+
 ## [1.6.2] - 2025-01-26
 
 ### 修复

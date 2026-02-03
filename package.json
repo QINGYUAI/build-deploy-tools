@@ -1,6 +1,6 @@
 {
   "name": "build-deploy-tools",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "构建部署工具包 - 支持文件复制、SVN操作、系统通知确认等功能，具有科技感进度条和现代化UI",
   "main": "index.js",
   "bin": {
